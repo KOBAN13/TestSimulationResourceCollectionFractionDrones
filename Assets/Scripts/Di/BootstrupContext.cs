@@ -18,6 +18,7 @@ namespace Di
         
         public override void InstallBindings()
         {
+            BindStateMachine();
             BuildSpawners();
         }
             
