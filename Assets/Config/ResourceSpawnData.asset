@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85bc8ba41c75409d8daa6168eb1bedf8, type: 3}
   m_Name: ResourceSpawnData
   m_EditorClassIdentifier: 
-  <ResourcePrefab>k__BackingField: {fileID: 0}
+  <ResourcePrefab>k__BackingField: {fileID: 2957507349963672317, guid: 44abbc3b88301754a92e93516f3b9720, type: 3}

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnSettings:
   - droneFraction: 1
-    droneViewPrefab: {fileID: 0}
+    droneViewPrefab: {fileID: 7432205451284862180, guid: 299016c3ff105e041a5bf6e464e2feff, type: 3}
   - droneFraction: 2
-    droneViewPrefab: {fileID: 0}
+    droneViewPrefab: {fileID: 5877387515614406012, guid: 3ec463e25c0689b4991e8e16da465ab9, type: 3}

@@ -1,5 +1,7 @@
-﻿using DroneFactory;
+﻿using Components;
+using DroneFactory;
 using DroneFactory.Data;
+using Pool;
 using ResourceFactory;
 using ResourceFactory.Data;
 using States;
@@ -24,6 +26,9 @@ namespace Di
             
         private void BuildSpawners()
         {
+            Container.BindInterfacesAndSelfTo<GenericObjectPool<DroneView>>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GenericObjectPool<ResourceView>>().AsSingle();
+            
             Container.BindInterfacesAndSelfTo<DroneSpawnData>().FromScriptableObject(_droneSpawnSettings).AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceSpawnData>().FromScriptableObject(_resourceSpawnSettings).AsSingle();
             

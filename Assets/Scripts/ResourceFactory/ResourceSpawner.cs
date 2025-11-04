@@ -14,6 +14,7 @@ namespace ResourceFactory
 
         private IResourceFactory _resourceFactory;
         private float _spawnDeleay = 3f; //TODO 
+        
         private IDisposable _spawnDisposable;
 
         [Inject]
@@ -23,6 +24,11 @@ namespace ResourceFactory
         private void Start()
         {
             StartSpawn();
+        }
+
+        private void OnDestroy()
+        {
+            _spawnDisposable?.Dispose();
         }
 
         private void StartSpawn()

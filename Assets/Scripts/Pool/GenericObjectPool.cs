@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Factory.Pool;
+using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Factory.Pool
+namespace Pool
 {
-    public class GenericGenericObjectPool<T> : IGenericObjectPool<T> where T : Component
+    public class GenericObjectPool<T> : IGenericObjectPool<T> where T : Component
     {
         private T _comboEffectPrefab;
         private ObjectPool<T> _effectPool;
