@@ -1,4 +1,4 @@
-﻿using StateMachine;
+﻿using States;
 
 namespace State
 {

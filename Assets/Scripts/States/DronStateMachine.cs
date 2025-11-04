@@ -4,13 +4,17 @@ using System.Linq;
 using State;
 using Zenject;
 
-namespace StateMachine
+namespace States
 {
     public class DronStateMachine : ITickable, IInitializable, IDisposable, IFixedTickable
     {
-        private List<IState> _states;
-        private StateMachine _stateMachine;
+        private readonly StateMachine _stateMachine;
         private readonly List<IDisposable> _disposables = new();
+
+        public DronStateMachine(StateMachine stateMachine)
+        {
+            _stateMachine = stateMachine;
+        }
 
         public void AddDispose(IDisposable disposable)
         {
@@ -21,11 +25,12 @@ namespace StateMachine
 
         public void TrySwapState<T>() where T : IState
         {
-            if (_stateMachine.currentStates is T == false)
+            if (_stateMachine.CurrentStates is not T)
             {
                 var state = _stateMachine.States.Values.FirstOrDefault(typeState => typeState is T);
 
-                if (state == null) throw new ArgumentNullException("Dont find state");
+                if (state == null) 
+                    throw new ArgumentNullException("Dont find state");
 
                 if (state.TrySwapState())
                 {
@@ -36,12 +41,12 @@ namespace StateMachine
 
         public void Tick()
         {
-            _stateMachine.currentStates.OnUpdateBehaviour();
+            _stateMachine.CurrentStates.OnUpdateBehaviour();
         }
         
         public void FixedTick()
         {
-            _stateMachine.currentStates.OnFixedUpdateBehaviour();
+            _stateMachine.CurrentStates.OnFixedUpdateBehaviour();
         }
         
         public void Initialize()

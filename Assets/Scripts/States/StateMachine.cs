@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using State;
 
-namespace StateMachine
+namespace States
 {
     public class StateMachine
     {
-        private Dictionary<Type, IState> _states = null;
-        public IState currentStates { get; private set; }
-        public IState previouslyState { get; private set; }
-        public bool isUpdate { get; private set; }
+        private readonly Dictionary<Type, IState> _states = null;
+        public IState CurrentStates { get; private set; }
+        public IState PreviouslyState { get; private set; }
+        public bool IsUpdate { get; private set; }
         public IReadOnlyDictionary<Type, IState> States => _states;
 
         public StateMachine(List<IState> states)
@@ -23,16 +23,16 @@ namespace StateMachine
 
         public void SwitchStates<TState>() where TState : IState
         {
-            isUpdate = false;
+            IsUpdate = false;
             TryExitStates();
             GetNewState<TState>();
             TryEnterStates<TState>();
-            isUpdate = true;
+            IsUpdate = true;
         }
 
         private void TryEnterStates<TState>() where TState : IState
         {
-            if (currentStates is TState playerBehaviour)
+            if (CurrentStates is TState playerBehaviour)
             {
                 playerBehaviour.OnEnter();
             }
@@ -40,7 +40,7 @@ namespace StateMachine
 
         private void TryExitStates()
         {
-            if (currentStates is { } playerBehaviour)
+            if (CurrentStates is { } playerBehaviour)
             {
                 playerBehaviour.OnExit();
             }
@@ -48,9 +48,9 @@ namespace StateMachine
 
         private void GetNewState<TState>() where TState : IState
         {
-            previouslyState = currentStates;
+            PreviouslyState = CurrentStates;
             var newState = GetState<TState>();
-            currentStates = newState;
+            CurrentStates = newState;
         }
 
         private TState GetState<TState>() where TState: IState
