@@ -8,14 +8,14 @@ namespace States
     {
         public DronStateMachine StateMachine { get; private set; }
         public string StateName { get; private set; }
-        private readonly DroneContext _ctx;
+        private readonly DroneContext _context;
         private readonly IResourceDirectory _directory;
         
-        public FindResource(DronStateMachine stateMachine, DroneContext ctx, IResourceDirectory directory, string stateName)
+        public FindResource(DronStateMachine stateMachine, DroneContext context, IResourceDirectory directory, string stateName)
         {
             StateMachine = stateMachine;
             StateName = stateName;
-            _ctx = ctx;
+            _context = context;
             _directory = directory;
         }
         
@@ -31,7 +31,7 @@ namespace States
 
         public void OnUpdateBehaviour()
         {
-            if (_ctx.TargetResource == null)
+            if (_context.TargetResource == null)
                 TryFind();
         }
 
@@ -44,17 +44,12 @@ namespace States
         {
             return true;
         }
-        
-        public void Dispose()
-        {
-            
-        }
 
         private void TryFind()
         {
-            if (_directory.TryReserveNearest(_ctx.Position, out var res))
+            if (_directory.TryReserveNearest(_context.Position, out var res))
             {
-                _ctx.TargetResource = res;
+                _context.TargetResource = res;
                 StateMachine.TrySwapState<MoveToTarget>();
             }
         }

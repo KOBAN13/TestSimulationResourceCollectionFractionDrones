@@ -14,11 +14,13 @@ namespace DroneFactory
     {
         private readonly Dictionary<EDroneFraction, IGenericObjectPool<DroneView>> _pools = new();
         private IDronSpawnData _spawnData;
+        private DiContainer _container;
 
         [Inject]
-        private void Construct(IDronSpawnData spawnData)
+        private void Construct(IDronSpawnData spawnData, DiContainer container)
         {
             _spawnData = spawnData;
+            _container = container;
         }
 
         public void Initialize()
@@ -36,7 +38,7 @@ namespace DroneFactory
                     continue;
                 }
 
-                var pool = new GenericObjectPool<DroneView>();
+                var pool = new GenericObjectPool<DroneView>(_container);
                 pool.Initialize(config.droneViewPrefab);
 
                 _pools[type] = pool;

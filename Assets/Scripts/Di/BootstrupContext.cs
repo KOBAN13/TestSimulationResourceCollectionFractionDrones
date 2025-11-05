@@ -1,7 +1,5 @@
-using Components;
 using DroneFactory;
 using DroneFactory.Data;
-using Pool;
 using ResourceFactory;
 using ResourceFactory.Data;
 using Services;
@@ -26,8 +24,6 @@ namespace Di
             
         private void BuildSpawners()
         {
-            Container.BindInterfacesAndSelfTo<GenericObjectPool<ResourceView>>().AsSingle();
-            
             Container.BindInterfacesAndSelfTo<DroneSpawnData>().FromScriptableObject(_droneSpawnSettings).AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceSpawnData>().FromScriptableObject(_resourceSpawnSettings).AsSingle();
             
@@ -40,8 +36,8 @@ namespace Di
 
         private void BindServices()
         {
-            Container.Bind<IResourceDirectory>().To<ResourceDirectory>().AsSingle();
-            Container.Bind<IEffectPlayer>().To<EffectPlayer>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ResourceDirectory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EffectPlayer>().AsSingle();
         }
     }
 }

@@ -1,7 +1,6 @@
 using Components;
 using UnityEngine;
 using UnityEngine.AI;
-using Utils;
 
 namespace Utils
 {

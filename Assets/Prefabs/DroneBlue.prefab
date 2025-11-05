@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3957634407950806200}
   - component: {fileID: 5877387515614406012}
+  - component: {fileID: 7710734513032539867}
   - component: {fileID: 8152495090514148616}
   m_Layer: 0
   m_Name: DroneBlue
@@ -47,6 +48,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _navMeshAgent: {fileID: 8152495090514148616}
+  _baseTransform: {fileID: 3957634407950806200}
+  _fraction: 2
+--- !u!114 &7710734513032539867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5486067768537448238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61dbea58fa2d487c91170093a2889a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _view: {fileID: 5877387515614406012}
 --- !u!195 &8152495090514148616
 NavMeshAgent:
   m_ObjectHideFlags: 0

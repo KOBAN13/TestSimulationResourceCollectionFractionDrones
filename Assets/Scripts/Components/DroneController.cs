@@ -18,7 +18,7 @@ namespace Components
         
         private IResourceDirectory _resourceDirectory;
         private IEffectPlayer _effectPlayer;
-
+        
         [Inject]
         public void Construct(IResourceDirectory resourceDirectory, IEffectPlayer effectPlayer)
         {

@@ -10,16 +10,18 @@ namespace ResourceFactory
     {
         private IGenericObjectPool<ResourceView> _objectFactory;
         private IResourceSpawnData _spawnData;
+        private DiContainer _container;
         
         [Inject] 
-        private void Construct(IGenericObjectPool<ResourceView> objectFactory, IResourceSpawnData spawnData)
+        private void Construct(IResourceSpawnData spawnData, DiContainer container)
         {
-            _objectFactory = objectFactory;
             _spawnData = spawnData;
+            _container = container;
         }
 
         public void Initialize()
         {
+            _objectFactory = new GenericObjectPool<ResourceView>(_container);
             _objectFactory.Initialize(_spawnData.ResourcePrefab);
         }
         

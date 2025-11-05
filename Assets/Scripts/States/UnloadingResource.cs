@@ -22,7 +22,9 @@ namespace States
         public void OnEnter()
         {
             _effects.PlayUnloadEffect(_ctx.BaseTransform.position);
+            
             _ctx.HasCargo = false;
+            
             StateMachine.TrySwapState<FindResource>();
         }
 

@@ -10,15 +10,15 @@ namespace States
     {
         public DronStateMachine StateMachine { get; private set; }
         public string StateName { get; private set; }
-        private readonly DroneContext _ctx;
+        private readonly DroneContext _context;
         private readonly IResourceDirectory _directory;
         private IDisposable _timer;
         
-        public CollectResource(DronStateMachine stateMachine, DroneContext ctx, IResourceDirectory directory, string stateName)
+        public CollectResource(DronStateMachine stateMachine, DroneContext context, IResourceDirectory directory, string stateName)
         {
             StateMachine = stateMachine;
             StateName = stateName;
-            _ctx = ctx;
+            _context = context;
             _directory = directory;
         }
         
@@ -27,12 +27,14 @@ namespace States
             _timer = Observable.Timer(TimeSpan.FromSeconds(2))
                 .Subscribe(_ =>
                 {
-                    _ctx.HasCargo = true;
-                    if (_ctx.TargetResource != null)
+                    _context.HasCargo = true;
+                    
+                    if (_context.TargetResource != null)
                     {
-                        _directory.Consume(_ctx.TargetResource);
-                        _ctx.TargetResource = null;
+                        _directory.Consume(_context.TargetResource);
+                        _context.TargetResource = null;
                     }
+                    
                     StateMachine.TrySwapState<ReturnToBase>();
                 });
             StateMachine.AddDispose(_timer);
@@ -55,7 +57,7 @@ namespace States
 
         public bool TrySwapState()
         {
-            return _ctx.TargetResource != null || _ctx.HasCargo;
+            return _context.TargetResource != null || _context.HasCargo;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Pool;
+using Zenject;
 
 namespace Pool
 {
@@ -7,6 +8,13 @@ namespace Pool
     {
         private T _comboEffectPrefab;
         private ObjectPool<T> _effectPool;
+        
+        private DiContainer _container;
+
+        public GenericObjectPool(DiContainer container)
+        {
+            _container = container;
+        }
 
         public void Initialize(T effect)
         {
