@@ -47,7 +47,7 @@ namespace Pool
             
         private T CreateComboEffect()
         {
-            return Object.Instantiate(_comboEffectPrefab);
+            return _container.InstantiatePrefabForComponent<T>(_comboEffectPrefab);
         }
         
         public T GetObject()
