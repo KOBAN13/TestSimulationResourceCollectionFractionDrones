@@ -1,6 +1,6 @@
 ﻿using System;
 using Components;
-using Factory.Utils;
+using Utils;
 
 namespace DroneFactory
 {

@@ -1,4 +1,4 @@
-﻿namespace Factory.Utils
+﻿namespace Utils
 {
     public enum EDroneFraction
     {

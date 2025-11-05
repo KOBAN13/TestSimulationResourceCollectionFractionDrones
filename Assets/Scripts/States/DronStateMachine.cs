@@ -1,17 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using State;
-using Zenject;
+using States.Interfaces;
 
 namespace States
 {
-    public class DronStateMachine : ITickable, IInitializable, IDisposable, IFixedTickable
+    public class DronStateMachine
     {
-        private readonly StateMachine _stateMachine;
+        private StateMachine _stateMachine;
         private readonly List<IDisposable> _disposables = new();
 
         public DronStateMachine(StateMachine stateMachine)
+        {
+            _stateMachine = stateMachine;
+        }
+
+        public void SetStateMachine(StateMachine stateMachine)
         {
             _stateMachine = stateMachine;
         }
@@ -36,41 +40,6 @@ namespace States
                 {
                     _stateMachine.SwitchStates<T>();
                 }
-            }
-        }
-
-        public void Tick()
-        {
-            _stateMachine.CurrentStates.OnUpdateBehaviour();
-        }
-        
-        public void FixedTick()
-        {
-            _stateMachine.CurrentStates.OnFixedUpdateBehaviour();
-        }
-        
-        public void Initialize()
-        {
-            /*_states = new()
-            {
-                new PlayerIdle(this),
-                new PlayerMovement(this),
-                new PlayerRising(this),
-                new PlayerSliding(this),
-                new PlayerFalling(this),
-                new PlayerJumping(this),
-                new PlayerPicksUpItem(this)
-            };
-            
-            _stateMachine = new StateMachine(_states);
-            _stateMachine.SwitchStates<PlayerIdle>();*/
-        }
-
-        public void Dispose()
-        {
-            foreach (var dispose in _disposables)
-            {
-                dispose.Dispose();
             }
         }
     }

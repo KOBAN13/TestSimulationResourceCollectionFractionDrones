@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections;
+using System;
+using System.Collections.Generic;
+using Components;
 using R3;
 using ResourceFactory.Interfaces;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
+using Services;
 
 namespace ResourceFactory
 {
@@ -14,12 +16,16 @@ namespace ResourceFactory
 
         private IResourceFactory _resourceFactory;
         private float _spawnDeleay = 3f; //TODO 
+        private IResourceDirectory _resourceDirectory;
         
         private IDisposable _spawnDisposable;
 
         [Inject]
-        private void Construct(IResourceFactory resourceFactory) =>
+        private void Construct(IResourceFactory resourceFactory, IResourceDirectory resourceDirectory)
+        {
             _resourceFactory = resourceFactory;
+            _resourceDirectory = resourceDirectory;
+        }
 
         private void Start()
         {
@@ -41,13 +47,13 @@ namespace ResourceFactory
         {
             var spawnPoint = GetRandomPointInRadius();
             var resource = _resourceFactory.CreateResource(spawnPoint);
+            _resourceDirectory?.Register(resource);
         }
 
         private Vector3 GetRandomPointInRadius()
         {
             var randomCircle = Random.insideUnitCircle * _spawnRadius;
             var point = new Vector3(randomCircle.x, 0f, randomCircle.y);
-
             return transform.position + point;
         }
 
@@ -56,8 +62,7 @@ namespace ResourceFactory
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, _spawnRadius);
-
-            // Подсказка в редакторе
+            
             UnityEditor.Handles.color = Color.yellow;
             UnityEditor.Handles.Label(transform.position + Vector3.up * 2f, $"Spawn Radius: {_spawnRadius}");
         }

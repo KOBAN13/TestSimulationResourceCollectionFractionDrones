@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using State;
+using States.Interfaces;
 
 namespace States
 {

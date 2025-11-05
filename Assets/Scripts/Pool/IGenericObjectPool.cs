@@ -1,4 +1,4 @@
-﻿namespace Factory.Pool
+﻿namespace Pool
 {
     public interface IGenericObjectPool<T>
     {

@@ -1,5 +1,4 @@
-﻿using Factory.Pool;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Pool;
 
 namespace Pool

@@ -1,10 +1,10 @@
-﻿using Components;
+using Components;
 using DroneFactory;
 using DroneFactory.Data;
 using Pool;
 using ResourceFactory;
 using ResourceFactory.Data;
-using States;
+using Services;
 using UnityEngine;
 using Zenject;
 
@@ -20,29 +20,28 @@ namespace Di
         
         public override void InstallBindings()
         {
-            BindStateMachine();
+            BindServices();
             BuildSpawners();
         }
             
         private void BuildSpawners()
         {
-            Container.BindInterfacesAndSelfTo<GenericObjectPool<DroneView>>().AsSingle();
             Container.BindInterfacesAndSelfTo<GenericObjectPool<ResourceView>>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<DroneSpawnData>().FromScriptableObject(_droneSpawnSettings).AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceSpawnData>().FromScriptableObject(_resourceSpawnSettings).AsSingle();
             
-            Container.BindInterfacesAndSelfTo<DroneSpawnFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DroneSpawnSpawnFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceSpawnFactory>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<DroneSpawner>().FromInstance(_droneSpawner).AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceSpawner>().FromInstance(_resourceSpawner).AsSingle();
         }
 
-        private void BindStateMachine()
+        private void BindServices()
         {
-            Container.BindInterfacesAndSelfTo<StateMachine>().AsSingle();
-            Container.BindInterfacesAndSelfTo<DronStateMachine>().AsSingle();
+            Container.Bind<IResourceDirectory>().To<ResourceDirectory>().AsSingle();
+            Container.Bind<IEffectPlayer>().To<EffectPlayer>().AsSingle();
         }
     }
 }
