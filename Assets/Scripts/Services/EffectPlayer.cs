@@ -6,7 +6,6 @@ namespace Services
     {
         public void PlayUnloadEffect(Vector3 position)
         {
-            // Placeholder: replace with particle system or animation trigger.
             Debug.Log($"[Effect] Unload at {position}");
         }
     }

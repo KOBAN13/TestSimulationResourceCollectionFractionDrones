@@ -9,8 +9,7 @@ namespace States
         public DronStateMachine StateMachine { get; private set; }
         public string StateName { get; private set; }
         private readonly DroneContext _context;
-        private bool _toBase;
-        private const float ArriveThreshold = 0.5f;
+        private const float ARRIVE_THRESHOLD = 0.5f;
         
         public MoveToTarget(DronStateMachine stateMachine, DroneContext context, string stateName)
         {
@@ -21,10 +20,7 @@ namespace States
         
         public void OnEnter()
         {
-            // decide target: if carrying cargo -> go to base, else -> go to resource
-            _toBase = _context.HasCargo || _context.TargetResource == null;
-            
-            var targetPos = _toBase ? _context.BaseTransform.position : _context.TargetResource.transform.position;
+            var targetPos = _context.TargetResource.transform.position;
             
             _context.Agent.isStopped = false;
             
@@ -41,23 +37,20 @@ namespace States
             if (_context.Agent.pathPending)
                 return;
 
-            if (!(_context.Agent.remainingDistance <= ArriveThreshold)) 
+            if (!(_context.Agent.remainingDistance <= ARRIVE_THRESHOLD)) 
                 return;
             
-            if (_toBase)
-                StateMachine.TrySwapState<UnloadingResource>();
-            else
-                StateMachine.TrySwapState<CollectResource>();
+            StateMachine.TrySwapState<CollectResource>();
         }
 
         public void OnFixedUpdateBehaviour()
         {
-            // no physics-based movement needed for NavMeshAgent
+            
         }
 
         public bool TrySwapState()
         {
-            return _toBase ? _context.HasCargo || _context.TargetResource == null : _context.TargetResource != null;
+            return _context.TargetResource != null;
         }
     }
 }

@@ -7,29 +7,39 @@ namespace States
     {
         public DronStateMachine StateMachine { get; private set; }
         public string StateName { get; private set; }
-        private readonly DroneContext _ctx;
+        private readonly DroneContext _context;
+        private const float ARRIVE_THRESHOLD = 0.5f;
         
-        public ReturnToBase(DronStateMachine stateMachine, DroneContext ctx, string stateName)
+        public ReturnToBase(DronStateMachine stateMachine, DroneContext context, string stateName)
         {
             StateMachine = stateMachine;
             StateName = stateName;
-            _ctx = ctx;
+            _context = context;
         }
         
         public void OnEnter()
         {
-            // Delegate movement to MoveToTarget (which will detect _ctx.HasCargo and go to base)
-            StateMachine.TrySwapState<MoveToTarget>();
+            var targetPos = _context.BaseTransform.position;
+            
+            _context.Agent.isStopped = false;
+            
+            _context.Agent.SetDestination(targetPos);
         }
 
         public void OnExit()
         {
-            
+            _context.Agent.isStopped = true;
         }
 
         public void OnUpdateBehaviour()
         {
+            if (_context.Agent.pathPending)
+                return;
+
+            if (!(_context.Agent.remainingDistance <= ARRIVE_THRESHOLD)) 
+                return;
             
+            StateMachine.TrySwapState<UnloadingResource>();
         }
 
         public void OnFixedUpdateBehaviour()
@@ -39,7 +49,7 @@ namespace States
 
         public bool TrySwapState()
         {
-            return _ctx.HasCargo;
+            return _context.HasCargo || _context.TargetResource == null;
         }
     }
 }

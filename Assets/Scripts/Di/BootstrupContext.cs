@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using DroneFactory;
 using DroneFactory.Data;
 using ResourceFactory;
 using ResourceFactory.Data;
 using Services;
 using UnityEngine;
+using Utils;
+using Utils.SerializedDictionary;
 using Zenject;
 
 namespace Di
@@ -15,6 +18,8 @@ namespace Di
         
         [SerializeField] private DroneSpawner _droneSpawner;
         [SerializeField] private ResourceSpawner _resourceSpawner;
+        
+        [SerializeField] private DroneBaseDictionary _droneBase;
         
         public override void InstallBindings()
         {
@@ -36,6 +41,7 @@ namespace Di
 
         private void BindServices()
         {
+            Container.BindInterfacesAndSelfTo<DroneBaseDictionary>().FromInstance(_droneBase).AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceDirectory>().AsSingle();
             Container.BindInterfacesAndSelfTo<EffectPlayer>().AsSingle();
         }

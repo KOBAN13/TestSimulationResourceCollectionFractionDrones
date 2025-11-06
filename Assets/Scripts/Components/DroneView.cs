@@ -1,16 +1,15 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Utils;
 
 namespace Components
 {
     public class DroneView : MonoBehaviour
     {
         [SerializeField] private NavMeshAgent _navMeshAgent;
-        [SerializeField] private Transform _baseTransform;
-        [SerializeField] private Utils.EDroneFraction _fraction;
+        [SerializeField] private EDroneFraction _fraction;
 
         public NavMeshAgent Agent => _navMeshAgent;
-        public Transform BaseTransform => _baseTransform;
-        public Utils.EDroneFraction Fraction => _fraction;
+        public EDroneFraction Fraction => _fraction;
     }
 }

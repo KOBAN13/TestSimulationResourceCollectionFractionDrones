@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Components;
 using R3;
 using ResourceFactory.Interfaces;
 using UnityEngine;
@@ -39,7 +37,9 @@ namespace ResourceFactory
 
         private void StartSpawn()
         {
-            _spawnDisposable = Observable.Timer(TimeSpan.FromSeconds(_spawnDeleay))
+            _spawnDisposable = Observable
+                .Timer(TimeSpan.FromSeconds(_spawnDeleay), TimeSpan.FromSeconds(_spawnDeleay))
+                .ObserveOnMainThread()
                 .Subscribe(_ => SpawnResource());
         }
 

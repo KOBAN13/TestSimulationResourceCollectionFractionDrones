@@ -4,6 +4,7 @@ using States;
 using States.Interfaces;
 using UnityEngine;
 using Utils;
+using Utils.SerializedDictionary;
 using Zenject;
 
 namespace Components
@@ -18,19 +19,23 @@ namespace Components
         
         private IResourceDirectory _resourceDirectory;
         private IEffectPlayer _effectPlayer;
+        private DroneBaseDictionary _droneBaseDictionary;
         
         [Inject]
-        public void Construct(IResourceDirectory resourceDirectory, IEffectPlayer effectPlayer)
+        public void Construct(DroneBaseDictionary droneBaseDictionary, IResourceDirectory resourceDirectory, IEffectPlayer effectPlayer)
         {
             _resourceDirectory = resourceDirectory;
             _effectPlayer = effectPlayer;
+            _droneBaseDictionary = droneBaseDictionary;
         }
 
         private void Awake()
         {
             var agent = _view.Agent;
             
-            _context = new DroneContext(_view, agent, _view.BaseTransform, _view.Fraction);
+            var baseTransform = _droneBaseDictionary[_view.Fraction];
+            
+            _context = new DroneContext(_view, agent, baseTransform, _view.Fraction);
 
             _dronStateMachine = new DronStateMachine(null);
 
