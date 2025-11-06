@@ -6,7 +6,7 @@ using Zenject;
 
 namespace ResourceFactory
 {
-    public class ResourceSpawnFactory : IResourceFactory, IInitializable
+    public class ResourceSpawnSpawnFactory : IResourceSpawnFactory, IInitializable
     {
         private IGenericObjectPool<ResourceView> _objectFactory;
         private IResourceSpawnData _spawnData;
@@ -32,6 +32,7 @@ namespace ResourceFactory
             return resource;
         }
         
-        public void ReleaseResource(ResourceView resource) => _objectFactory.ReturnObject(resource);
+        public void ReleaseResource(ResourceView resource)
+            => _objectFactory.ReturnObject(resource);
     }
 }

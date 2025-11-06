@@ -9,7 +9,7 @@ namespace States
         public DronStateMachine StateMachine { get; private set; }
         public string StateName { get; private set; }
         private readonly DroneContext _context;
-        private const float ARRIVE_THRESHOLD = 0.5f;
+        private const float ARRIVE_THRESHOLD = 1f;
         
         public MoveToTarget(DronStateMachine stateMachine, DroneContext context, string stateName)
         {
@@ -34,6 +34,12 @@ namespace States
 
         public void OnUpdateBehaviour()
         {
+            if (_context.TargetResource == null)
+            {
+                StateMachine.TrySwapState<FindResource>();
+                return;
+            }
+            
             if (_context.Agent.pathPending)
                 return;
 

@@ -39,6 +39,7 @@ namespace DroneFactory
                 }
 
                 var pool = new GenericObjectPool<DroneView>(_container);
+                
                 pool.Initialize(config.droneViewPrefab);
 
                 _pools[type] = pool;
@@ -51,7 +52,7 @@ namespace DroneFactory
                 return null;
 
             var drone = pool.GetObject();
-            drone.transform.position = position;
+            drone.transform.position += position;
             return drone;
         }
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Services;
 using States;
 using States.Interfaces;
@@ -56,12 +56,21 @@ namespace Components
 
         private void Update()
         {
-            _stateMachine?.CurrentStates?.OnUpdateBehaviour();
+            _stateMachine.CurrentStates.OnUpdateBehaviour();
         }
 
         private void FixedUpdate()
         {
-            _stateMachine?.CurrentStates?.OnFixedUpdateBehaviour();
+            _stateMachine.CurrentStates.OnFixedUpdateBehaviour();
+        }
+
+        private void OnDestroy()
+        {
+            if (_context.TargetResource == null)
+                return;
+            
+            _resourceDirectory.Release(_context.TargetResource);
+            _context.TargetResource = null;
         }
     }
 }

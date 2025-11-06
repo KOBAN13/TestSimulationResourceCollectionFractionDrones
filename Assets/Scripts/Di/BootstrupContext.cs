@@ -4,6 +4,7 @@ using DroneFactory.Data;
 using ResourceFactory;
 using ResourceFactory.Data;
 using Services;
+using UI;
 using UnityEngine;
 using Utils;
 using Utils.SerializedDictionary;
@@ -25,6 +26,7 @@ namespace Di
         {
             BindServices();
             BuildSpawners();
+            BindMVP();
         }
             
         private void BuildSpawners()
@@ -33,7 +35,7 @@ namespace Di
             Container.BindInterfacesAndSelfTo<ResourceSpawnData>().FromScriptableObject(_resourceSpawnSettings).AsSingle();
             
             Container.BindInterfacesAndSelfTo<DroneSpawnSpawnFactory>().AsSingle();
-            Container.BindInterfacesAndSelfTo<ResourceSpawnFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ResourceSpawnSpawnFactory>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<DroneSpawner>().FromInstance(_droneSpawner).AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceSpawner>().FromInstance(_resourceSpawner).AsSingle();
@@ -44,6 +46,12 @@ namespace Di
             Container.BindInterfacesAndSelfTo<DroneBaseDictionary>().FromInstance(_droneBase).AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceDirectory>().AsSingle();
             Container.BindInterfacesAndSelfTo<EffectPlayer>().AsSingle();
+        }
+        
+        private void BindMVP()
+        {
+            Container.Bind<DroneSimulationModel>().AsSingle();
+            Container.Bind<DroneSimulationPresenter>().AsSingle();
         }
     }
 }

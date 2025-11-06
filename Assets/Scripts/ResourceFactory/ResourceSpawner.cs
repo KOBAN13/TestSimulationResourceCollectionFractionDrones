@@ -12,16 +12,16 @@ namespace ResourceFactory
     {
         [SerializeField] private float _spawnRadius = 10f;
 
-        private IResourceFactory _resourceFactory;
+        private IResourceSpawnFactory _resourceSpawnFactory;
         private float _spawnDeleay = 3f; //TODO 
         private IResourceDirectory _resourceDirectory;
         
         private IDisposable _spawnDisposable;
 
         [Inject]
-        private void Construct(IResourceFactory resourceFactory, IResourceDirectory resourceDirectory)
+        private void Construct(IResourceSpawnFactory resourceSpawnFactory, IResourceDirectory resourceDirectory)
         {
-            _resourceFactory = resourceFactory;
+            _resourceSpawnFactory = resourceSpawnFactory;
             _resourceDirectory = resourceDirectory;
         }
 
@@ -46,7 +46,7 @@ namespace ResourceFactory
         private void SpawnResource()
         {
             var spawnPoint = GetRandomPointInRadius();
-            var resource = _resourceFactory.CreateResource(spawnPoint);
+            var resource = _resourceSpawnFactory.CreateResource(spawnPoint);
             _resourceDirectory?.Register(resource);
         }
 

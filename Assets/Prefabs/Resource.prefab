@@ -109,6 +109,22 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: -3645699230140503879, guid: a06301dde1b1cff408a48b93466215e6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -3645699230140503879, guid: a06301dde1b1cff408a48b93466215e6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -3645699230140503879, guid: a06301dde1b1cff408a48b93466215e6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3645699230140503879, guid: a06301dde1b1cff408a48b93466215e6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a06301dde1b1cff408a48b93466215e6, type: 3}
       propertyPath: m_Name
       value: larger_box

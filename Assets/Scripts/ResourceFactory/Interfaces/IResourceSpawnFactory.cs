@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ResourceFactory.Interfaces
 {
-    public interface IResourceFactory
+    public interface IResourceSpawnFactory
     {
         ResourceView CreateResource(Vector3 position);
         void ReleaseResource(ResourceView resource);

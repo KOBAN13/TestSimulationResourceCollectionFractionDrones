@@ -21,6 +21,12 @@ namespace States
         
         public void OnEnter()
         {
+            if (_context.TargetResource != null)
+            {
+                _directory.Release(_context.TargetResource);
+                _context.TargetResource = null;
+            }
+            
             TryFind();
         }
 
