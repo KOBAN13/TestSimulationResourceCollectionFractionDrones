@@ -31,10 +31,13 @@ namespace DroneFactory
 
         private void OnEnable()
         {
-            _model.DroneCount.Subscribe(OnDroneCountChanged).AddTo(this);
+            _model.DroneCount
+                .Skip(1)
+                .Subscribe(OnDroneCountChanged)
+                .AddTo(this);
         }
         
-        private void Start()
+        private void Awake()
         {
             _countDronesInTeam = new Dictionary<EDroneFraction, List<DroneView>>
             {
@@ -48,7 +51,8 @@ namespace DroneFactory
             for (var i = 0; i < count; i++)
             {
                 var randomX = Random.Range(_randomOffsetSpawn.x, _randomOffsetSpawn.y);
-                var randomOffset = new Vector3(randomX, 0f, 0f);
+                var randomZ = Random.Range(_randomOffsetSpawn.x, _randomOffsetSpawn.y);
+                var randomOffset = new Vector3(randomX, 0f, randomZ);
                 var drone = _droneSpawnFactory.CreateDrone(type, randomOffset + spawnPoint.position);
                 _countDronesInTeam[type].Add(drone);
             }

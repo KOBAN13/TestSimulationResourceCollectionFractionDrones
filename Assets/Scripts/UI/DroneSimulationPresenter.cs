@@ -7,17 +7,13 @@ namespace UI
     public class DroneSimulationPresenter : IDisposable
     {
         private readonly DroneSimulationModel _model;
-        private readonly IDroneSpawner _droneSpawner;
         
         private DroneSimulationView _view;
         private readonly CompositeDisposable _disposables = new();
         
-        public DroneSimulationPresenter(
-            DroneSimulationModel model,
-            IDroneSpawner droneSpawner)
+        public DroneSimulationPresenter(DroneSimulationModel model)
         {
             _model = model;
-            _droneSpawner = droneSpawner;
         }
         
         public void Initialize(DroneSimulationView view)
@@ -26,6 +22,17 @@ namespace UI
             
             _view.OnDroneCountChanged += HandleDroneCountChanged;
             _view.OnDroneSpeedChanged += HandleDroneSpeedChanged;
+            
+            _model.DroneCount
+                .Subscribe(count => _view.UpdateDroneCountDisplay(count))
+                .AddTo(_disposables);
+            
+            _model.DroneSpeed
+                .Subscribe(speed => _view.UpdateDroneSpeedDisplay(speed))
+                .AddTo(_disposables);
+            
+            _model.SetDroneCount(1);
+            _model.SetDroneSpeed(4);
         }
 
         private void HandleDroneSpeedChanged(float speedDrone)
@@ -40,10 +47,8 @@ namespace UI
         
         public void Dispose()
         {
-            if (_view != null)
-            {
-                _view.OnDroneCountChanged -= HandleDroneCountChanged;
-            }
+            _view.OnDroneCountChanged -= HandleDroneCountChanged;
+            _view.OnDroneSpeedChanged -= HandleDroneSpeedChanged;
             
             _disposables?.Dispose();
             _model?.Dispose();

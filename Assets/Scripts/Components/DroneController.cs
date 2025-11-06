@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
+using R3;
 using Services;
 using States;
 using States.Interfaces;
+using UI;
 using UnityEngine;
 using Utils;
 using Utils.SerializedDictionary;
@@ -21,16 +24,28 @@ namespace Components
         private IEffectPlayer _effectPlayer;
         private DroneBaseDictionary _droneBaseDictionary;
         
+        private DroneSimulationModel _model;
+        
         [Inject]
-        public void Construct(DroneBaseDictionary droneBaseDictionary, IResourceDirectory resourceDirectory, IEffectPlayer effectPlayer)
+        public void Construct(
+            DroneSimulationModel model, 
+            DroneBaseDictionary droneBaseDictionary, 
+            IResourceDirectory resourceDirectory, 
+            IEffectPlayer effectPlayer
+        )
         {
             _resourceDirectory = resourceDirectory;
             _effectPlayer = effectPlayer;
             _droneBaseDictionary = droneBaseDictionary;
+            _model = model;
         }
 
         private void Awake()
         {
+            _model.DroneSpeed
+                .Subscribe(speed => _view.Agent.speed = speed)
+                .AddTo(this);
+            
             var agent = _view.Agent;
             
             var baseTransform = _droneBaseDictionary[_view.Fraction];

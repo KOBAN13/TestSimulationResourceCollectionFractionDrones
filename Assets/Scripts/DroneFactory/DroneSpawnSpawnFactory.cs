@@ -53,6 +53,7 @@ namespace DroneFactory
 
             var drone = pool.GetObject();
             drone.transform.position += position;
+            drone.transform.rotation = Quaternion.identity;
             return drone;
         }
 

@@ -10,6 +10,8 @@ namespace UI
     { 
         [SerializeField] private Slider _droneCountSlider;
         [SerializeField] private Slider _droneSpeedSkider;
+        [SerializeField] private TMP_Text _droneCountText;
+        [SerializeField] private TMP_Text _droneSpeedText;
 
         [SerializeField] private TMP_InputField _resourceSpawnGeneration;
         [SerializeField] private Toggle _showDronePath;
@@ -59,6 +61,16 @@ namespace UI
         {
             var speed = Mathf.RoundToInt(value);
             OnDroneSpeedChanged?.Invoke(speed);
+        }
+
+        public void UpdateDroneCountDisplay(int count)
+        {
+            _droneCountText.text = count.ToString();
+        }
+
+        public void UpdateDroneSpeedDisplay(float speed)
+        {
+            _droneSpeedText.text = speed.ToString("F1");
         }
     }
 }

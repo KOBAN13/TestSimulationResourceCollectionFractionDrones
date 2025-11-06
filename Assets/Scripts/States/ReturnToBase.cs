@@ -8,7 +8,7 @@ namespace States
         public DronStateMachine StateMachine { get; private set; }
         public string StateName { get; private set; }
         private readonly DroneContext _context;
-        private const float ARRIVE_THRESHOLD = 1f;
+        private const float ARRIVE_THRESHOLD = 2f;
         
         public ReturnToBase(DronStateMachine stateMachine, DroneContext context, string stateName)
         {
