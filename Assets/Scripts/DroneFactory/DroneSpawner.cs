@@ -31,9 +31,14 @@ namespace DroneFactory
 
         private void OnEnable()
         {
-            _model.DroneCount
+            _model.DroneCountInRedTeam
                 .Skip(1)
-                .Subscribe(OnDroneCountChanged)
+                .Subscribe(count => UpdateTeamDroneCount(EDroneFraction.Red, count))
+                .AddTo(this);
+            
+            _model.DroneCountInBlueTeam
+                .Skip(1)
+                .Subscribe(count => UpdateTeamDroneCount(EDroneFraction.Blue, count))
                 .AddTo(this);
         }
         
@@ -56,12 +61,6 @@ namespace DroneFactory
                 var drone = _droneSpawnFactory.CreateDrone(type, randomOffset + spawnPoint.position);
                 _countDronesInTeam[type].Add(drone);
             }
-        }
-        
-        private void OnDroneCountChanged(int count)
-        {
-            UpdateTeamDroneCount(EDroneFraction.Blue, count);
-            UpdateTeamDroneCount(EDroneFraction.Red, count);
         }
         
         private void UpdateTeamDroneCount(EDroneFraction team, int newCount)

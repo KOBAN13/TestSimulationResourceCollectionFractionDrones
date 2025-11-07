@@ -5,6 +5,7 @@ using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 using Services;
+using UI;
 
 namespace ResourceFactory
 {
@@ -13,21 +14,25 @@ namespace ResourceFactory
         [SerializeField] private float _spawnRadius = 10f;
 
         private IResourceSpawnFactory _resourceSpawnFactory;
-        private float _spawnDeleay = 3f; //TODO 
         private IResourceDirectory _resourceDirectory;
+        
+        private DroneSimulationModel _model;
         
         private IDisposable _spawnDisposable;
 
         [Inject]
-        private void Construct(IResourceSpawnFactory resourceSpawnFactory, IResourceDirectory resourceDirectory)
+        private void Construct(DroneSimulationModel model, IResourceSpawnFactory resourceSpawnFactory, IResourceDirectory resourceDirectory)
         {
+            _model = model;
             _resourceSpawnFactory = resourceSpawnFactory;
             _resourceDirectory = resourceDirectory;
         }
 
-        private void Start()
+        private void Awake()
         {
-            StartSpawn();
+            _model.ResourceSpawnGeneration
+                .Subscribe(StartSpawn)
+                .AddTo(this);
         }
 
         private void OnDestroy()
@@ -35,10 +40,12 @@ namespace ResourceFactory
             _spawnDisposable?.Dispose();
         }
 
-        private void StartSpawn()
+        private void StartSpawn(float spawnDelay)
         {
+            _spawnDisposable?.Dispose();
+            
             _spawnDisposable = Observable
-                .Timer(TimeSpan.FromSeconds(_spawnDeleay), TimeSpan.FromSeconds(_spawnDeleay))
+                .Timer(TimeSpan.FromSeconds(spawnDelay), TimeSpan.FromSeconds(spawnDelay))
                 .ObserveOnMainThread()
                 .Subscribe(_ => SpawnResource());
         }

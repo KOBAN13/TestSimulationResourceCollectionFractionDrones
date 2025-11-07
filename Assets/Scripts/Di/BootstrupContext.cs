@@ -45,7 +45,6 @@ namespace Di
         {
             Container.BindInterfacesAndSelfTo<DroneBaseDictionary>().FromInstance(_droneBase).AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceDirectory>().AsSingle();
-            Container.BindInterfacesAndSelfTo<EffectPlayer>().AsSingle();
         }
         
         private void BindMVP()

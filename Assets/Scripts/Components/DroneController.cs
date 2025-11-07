@@ -21,21 +21,21 @@ namespace Components
         private DroneContext _context;
         
         private IResourceDirectory _resourceDirectory;
-        private IEffectPlayer _effectPlayer;
+        private IDroneUnloadingResourceEffect _droneUnloadingResourceEffect;
         private DroneBaseDictionary _droneBaseDictionary;
         
         private DroneSimulationModel _model;
+        
+        private bool _showDronePath;
         
         [Inject]
         public void Construct(
             DroneSimulationModel model, 
             DroneBaseDictionary droneBaseDictionary, 
-            IResourceDirectory resourceDirectory, 
-            IEffectPlayer effectPlayer
+            IResourceDirectory resourceDirectory
         )
         {
             _resourceDirectory = resourceDirectory;
-            _effectPlayer = effectPlayer;
             _droneBaseDictionary = droneBaseDictionary;
             _model = model;
         }
@@ -45,6 +45,12 @@ namespace Components
             _model.DroneSpeed
                 .Subscribe(speed => _view.Agent.speed = speed)
                 .AddTo(this);
+            
+            _model.ShowDronePath
+                .Subscribe(isActive => _showDronePath = isActive)
+                .AddTo(this);
+
+            _droneUnloadingResourceEffect = new DroneUnloadingResourceEffect(_view.ParticleSystem);
             
             var agent = _view.Agent;
             
@@ -58,7 +64,7 @@ namespace Components
             var move = new MoveToTarget(_dronStateMachine, _context, "MoveToTarget");
             var collect = new CollectResource(_dronStateMachine, _context, _resourceDirectory, "CollectResource");
             var returnBase = new ReturnToBase(_dronStateMachine, _context, "ReturnToBase");
-            var unload = new UnloadingResource(_dronStateMachine, _context, _effectPlayer, "UnloadingResource");
+            var unload = new UnloadingResource(_model, _dronStateMachine, _context, _droneUnloadingResourceEffect, "UnloadingResource");
 
             _stateMachine = new StateMachine(new List<IState>
             {
@@ -69,6 +75,20 @@ namespace Components
             _stateMachine.SwitchStates<FindResource>();
         }
 
+        private void UpdatePathVisualization()
+        {
+            var corners = _view.Agent.path.corners;
+
+            if (corners.Length < 2)
+            {
+                _view.LineRenderer.positionCount = 0;
+                return;
+            }
+
+            _view.LineRenderer.positionCount = corners.Length;
+            _view.LineRenderer.SetPositions(corners);
+        }
+
         private void Update()
         {
             _stateMachine.CurrentStates.OnUpdateBehaviour();
@@ -77,6 +97,15 @@ namespace Components
         private void FixedUpdate()
         {
             _stateMachine.CurrentStates.OnFixedUpdateBehaviour();
+            
+            if (_view.Agent.path == null || !_showDronePath)
+            {
+                _view.LineRenderer.positionCount = 0;
+
+                return;
+            }
+
+            UpdatePathVisualization();
         }
 
         private void OnDestroy()

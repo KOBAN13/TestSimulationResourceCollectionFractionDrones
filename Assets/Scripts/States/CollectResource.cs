@@ -14,7 +14,12 @@ namespace States
         private readonly IResourceDirectory _directory;
         private IDisposable _timer;
         
-        public CollectResource(DronStateMachine stateMachine, DroneContext context, IResourceDirectory directory, string stateName)
+        public CollectResource(
+            DronStateMachine stateMachine, 
+            DroneContext context, 
+            IResourceDirectory directory,
+            string stateName
+        )
         {
             StateMachine = stateMachine;
             StateName = stateName;
